@@ -1,2 +1,6 @@
 import numpy as np
-print("hello")
+
+data = np.loadtxt("data.txt")
+
+print(data)
+
