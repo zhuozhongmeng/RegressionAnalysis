@@ -52,11 +52,9 @@ for time in range(times):
 plt.plot(range(times), delta_sum)
 plt.plot(range(times), delta_b_sum)
 plt.show()
-<<<<<<< HEAD:nD/1D.py
 plt.pause(10)
 print(type(w))
 print("hello")
-=======
 plt.pause(1)
 print(type(y_))
 File = open("w.txt", "w+")
@@ -66,4 +64,3 @@ for i in y_:
     File.write('q')
     File.flush()
 File.close()
->>>>>>> 1D:1D/1D.py
