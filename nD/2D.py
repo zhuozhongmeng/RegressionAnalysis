@@ -2,7 +2,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 data = np.loadtxt("data2d.txt")
-print(data)
+npdata = np.array(data)
+print(npdata,npdata.shape)
+npreshap = npdata.reshape((2,-1))
+print(npreshap.shape)
+print(npreshap)
+npdataT = npreshap.transpose()
 times = 3000
 rate = 0.00001
 x=[]
