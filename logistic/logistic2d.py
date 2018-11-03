@@ -1,3 +1,5 @@
+import time
+start = time.clock()
 import numpy as np
 import matplotlib.pyplot as plt
 import random
@@ -99,7 +101,7 @@ times = 10000
 
 data = np.loadtxt("data2d.txt")
 data_x, data_y, m, n, data_x_0_view, data_x_1_view = m_getdata(data)
-data_x = np.insert(data_x, 0, values=1, axis=1)
+data_x = np.insert(data_x, 0, values=1, axis=1)  #axis 代表维度 参数分别代表：数据，插入位置，插入值，插入维度
 
 data_x_0_view = np.array(data_x_0_view)
 data_x_1_view = np.array(data_x_1_view)
@@ -107,3 +109,5 @@ data_x_1_view = np.array(data_x_1_view)
 w, delta_sum_view_m, w_view = logistic(data_x, data_y, type=0)
 
 show = m_plt_show(w, data, delta_sum_view_m, w_view)
+end = time.clock()
+print(end - start,"秒")
