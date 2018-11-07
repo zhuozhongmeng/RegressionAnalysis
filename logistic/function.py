@@ -67,7 +67,7 @@ def m_logistic(data_x, data_y, type=0, rate=0.001, times=1000):
         plt.plot(range(times), delta_sum)
         plt.pause(1)
         plt.close()
-        #print(w)
+        # print(w)
 
     if type == 1:
         w = np.ones(n)
@@ -113,3 +113,4 @@ def m_test_w(w, data_x, data_y):
 
     print("准确率为", (1 - error / m) * 100, "%")
     print(w)
+
