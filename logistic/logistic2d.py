@@ -28,6 +28,9 @@ def m_getdata(data):
 def sigmoid(inx):
     return 1.0 / (1 + np.exp(-inx))
 
+#softmax函数
+def softmax():
+
 
 # 回归函数，type=0时使用批量逻辑回归，type=1时使用随机逻辑回归,只输出w矩阵，
 def logistic(data_x, data_y, type=0):

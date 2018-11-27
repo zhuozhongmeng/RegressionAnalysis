@@ -5,22 +5,23 @@ import matplotlib.pyplot as plt
 
 
 # 默认返回样本不分类 #默认不增加偏置项数列 默认偏置为1，
-def m_getdata(data, gettype=False, getinsert=False, bias=1):  # 默认返回样本不分类 #默认不增加偏置项数列 默认偏置为1
+def m_getdata(data, gettype=False, getinsert=False, bias=1, data_y_shape = 1):  # 默认返回样本不分类 #默认不增加偏置项数列 默认偏置为1
     m, n = data.shape
     data = np.array(data)
-    data_x = data[:, 0:n - 1]
-    data_y = data[:, -1]
+    data_x = data[:, 0:n - data_y_shape]
+    data_y = data[:, -data_y_shape:]
     data_x_with_type_0 = []
     data_x_with_type_1 = []
     data_y_with_type_0 = []
     data_y_with_type_1 = []
-    for i in range(m):
-        if data_y[i] == 0:
-            data_x_with_type_0.append(data_x[i])
-            data_y_with_type_0.append(data_y[i])
-        if data_y[i] == 1:
-            data_x_with_type_1.append(data_x[i])
-            data_y_with_type_1.append(data_y[i])
+    if data_y_shape == 1:
+        for i in range(m):
+            if data_y[i] == 0:
+                data_x_with_type_0.append(data_x[i])
+                data_y_with_type_0.append(data_y[i])
+            if data_y[i] == 1:
+                data_x_with_type_1.append(data_x[i])
+                data_y_with_type_1.append(data_y[i])
     if getinsert == True:
         data_x = np.insert(data_x, 0, values=bias, axis=1)
         data_x_with_type_0 = np.insert(data_x_with_type_0, 0, values=bias, axis=1)
@@ -34,6 +35,23 @@ def m_getdata(data, gettype=False, getinsert=False, bias=1):  # 默认返回样�
 
 def m_sigmoid(inx):
     return 1 / (1 + np.exp(-inx))
+
+
+def m_softmax(numerator):
+    m, n = numerator.shape
+    #print("分子形状",numerator.shape)
+    #numerator -= np.max(numerator)
+    numerator = np.exp(numerator)#不要忘了求对数
+    denominator = np.sum(numerator, axis=1)
+    denominator = np.reshape(denominator,[m,1])
+    #print("分母形状",denominator.shape)
+    softmax_softmax = numerator / denominator
+    #print("输出形状",softmax_softmax.shape)
+    return softmax_softmax
+
+
+
+
 
 
 # 逻辑回归函数，返回W
@@ -114,3 +132,38 @@ def m_test_w(w, data_x, data_y):
     print("准确率为", (1 - error / m) * 100, "%")
     print(w)
 
+
+def m_r_softmax(data_x,data_y,w,times = 30000,rate =0.01):
+
+    delta = []
+    m,n = data_x.shape
+    p,q = data_y.shape
+    data_v = []
+    for i in range(times):
+
+        inx = np.dot(data_x, w)
+        softmax_result = m_softmax(inx)
+        w -= rate*np.dot(np.transpose(data_x), (softmax_result - data_y))/m
+        if i %1 == 0 :
+            #print(i)
+            test_data = np.dot(data_x,w)
+            dalta= data_y - m_softmax(test_data)
+            dalta_0 = m_softmax(softmax_result - data_y)
+            #print(dalta[0],dalta_0[0])
+            data_v.append(dalta_0[0])
+    plt.plot(range(times), data_v)
+    plt.show()
+    return w
+
+def m_softmax_test(data_x,data_y,w):
+    data_in = np.dot(data_x,w)
+    y_ = m_softmax(data_in)
+
+    m,n = y_.shape
+
+    #delta =  np.sum(np.sum(data_y - y_))
+    for i in range(m):
+        for  j in range(n):
+            if y_[i-1,j-1]<0.5:
+                y_[i-1,j-1] = 0
+    print(y_)
